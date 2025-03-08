@@ -1,8 +1,9 @@
 package com.akakou.proverkit
 
+import android.net.Uri
 import com.akakou.proverkit.proverkit.AbstractProver
 
-class SampleProver: AbstractProver() {
+class SampleProver(uri: Uri): AbstractProver(uri) {
     override fun needUserCheck() : Boolean {
         return true
     }

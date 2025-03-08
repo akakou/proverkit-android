@@ -25,7 +25,7 @@ import com.akakou.proverkit.proverkit.ui.theme.ProverKitTheme
 
 
 class ProverActivityHelper(
-    val prover: AbstractProver,
+    val manager: AbstractProverManager,
 ) {
     var warnMessageText : String = "Hi! Do you check it?"
     var submitButtonText : String = "Go !!"
@@ -38,23 +38,23 @@ class ProverActivityHelper(
         val c = uri.getQueryParameter("callback")
         callback = Uri.parse(c)
 
-        prover.init(uri)
+        val prover = manager.createProver(callback)!!
 
         val needUserCheck = prover.needUserCheck()
 
         if (!needUserCheck) {
-            callbackWithProof(activity)
+            callbackWithProof(activity, prover)
             activity.finish()
         }
 
         activity.setContent {
             ProverActivityUI(warnMessageText, submitButtonText) {
-                callbackWithProof(activity)
+                callbackWithProof(activity, prover)
             }
         }
     }
 
-    fun callbackWithProof(activity: ComponentActivity) : Int {
+    fun callbackWithProof(activity: ComponentActivity, prover: AbstractProver) : Int {
         val proof = prover.prove()
 
         val resultUrl = callback.buildUpon()
