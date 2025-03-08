@@ -1,4 +1,4 @@
-package com.akakou.proverkit.proverkit
+package com.akakou.proverkit
 
 import android.net.Uri
 

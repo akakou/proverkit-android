@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ProverKit"
         tools:targetApi="35">
         <activity
-            android:name=".SampleProverActivity"
+            android:name=".example.SampleProverActivity"
             android:exported="true"
             android:label="@string/title_activity_prover"
             android:theme="@style/Theme.ProverKit">
@@ -27,12 +27,12 @@
 
         </activity>
         <activity
-            android:name=".proverkit.identification.phone_auth.PhoneAuthActivity"
+            android:name=".identification.phone_auth.PhoneAuthActivity"
             android:exported="false"
             android:label="@string/title_activity_phone_auth"
             android:theme="@style/Theme.ProverKit" />
         <activity
-            android:name=".MainActivity"
+            android:name=".example.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ProverKit">
