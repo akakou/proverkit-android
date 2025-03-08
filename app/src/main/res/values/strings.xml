@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProverKit</string>
+    <string name="title_activity_phone_auth">PhoneAuthActivity</string>
 </resources>
