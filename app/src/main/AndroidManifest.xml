@@ -13,21 +13,28 @@
         android:theme="@style/Theme.ProverKit"
         tools:targetApi="35">
         <activity
+            android:name=".CredentialViewActivity"
+            android:exported="false"
+            android:label="@string/title_activity_credential_view"
+            android:theme="@style/Theme.ProverKit" />
+        <activity
             android:name=".example.SampleProverActivity"
             android:exported="true"
             android:label="@string/title_activity_prover"
             android:theme="@style/Theme.ProverKit">
-
             <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="proverkit" android:host="proverkit" />
-            </intent-filter>
 
+                <data
+                    android:host="proverkit"
+                    android:scheme="proverkit" />
+            </intent-filter>
         </activity>
         <activity
-            android:name=".identification.phone_auth.PhoneAuthActivity"
+            android:name=".identification.phone_auth.PhoneNumberAuthActivity"
             android:exported="false"
             android:label="@string/title_activity_phone_auth"
             android:theme="@style/Theme.ProverKit" />

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 
-class PhoneAuthActivity : ComponentActivity() {
+class PhoneNumberAuthActivity : ComponentActivity() {
     lateinit var configEditor : SharedPreferences.Editor
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class PhoneAuthActivity : ComponentActivity() {
         FirebaseAuthUIActivityResultContract(),
     ) { res ->
         if (res.resultCode != RESULT_OK) {
-            Toast.makeText(this@PhoneAuthActivity, "Sign in failed", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@PhoneNumberAuthActivity, "Sign in failed", Toast.LENGTH_LONG).show()
         }
 
         val user = FirebaseAuth.getInstance().currentUser
@@ -53,7 +53,7 @@ class PhoneAuthActivity : ComponentActivity() {
             val idToken = task?.token
 
             if (idToken == null) {
-                Toast.makeText(this@PhoneAuthActivity, "Sign in failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@PhoneNumberAuthActivity, "Sign in failed", Toast.LENGTH_LONG).show()
             }
 
             GlobalScope.launch(Dispatchers.Main){
