@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import com.akakou.proverkit.proverkit.identification.phone_auth.PhoneAuthActivity
-import com.akakou.proverkit.ui.theme.ProverKitTheme
+import com.akakou.proverkit.proverkit.ui.theme.ProverKitTheme
 
 class MainActivity : ComponentActivity() {
     lateinit var config : SharedPreferences

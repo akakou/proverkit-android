@@ -1,4 +1,4 @@
-package com.akakou.proverkit.ui.theme
+package com.akakou.proverkit.proverkit.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
