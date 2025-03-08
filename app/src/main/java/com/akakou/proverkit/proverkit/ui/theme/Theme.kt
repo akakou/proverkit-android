@@ -1,5 +1,6 @@
-package com.akakou.proverkit.identification.phone_auth.ui.theme
+package com.akakou.proverkit.proverkit.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
