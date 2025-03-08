@@ -1,10 +1,10 @@
-package com.akakou.proverkit
+package com.akakou.proverkit.example
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import com.akakou.proverkit.proverkit.MainActivityHelper
-import com.akakou.proverkit.proverkit.identification.phone_auth.PhoneAuthActivity
+import com.akakou.proverkit.MainActivityHelper
+import com.akakou.proverkit.identification.phone_auth.PhoneAuthActivity
 
 class MainActivity : ComponentActivity() {
     val helper: MainActivityHelper =  MainActivityHelper(manager)

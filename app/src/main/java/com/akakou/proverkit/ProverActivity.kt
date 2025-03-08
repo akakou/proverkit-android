@@ -1,4 +1,4 @@
-package com.akakou.proverkit.proverkit
+package com.akakou.proverkit
 
 import android.content.Intent
 import android.net.Uri
@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.akakou.proverkit.proverkit.ui.theme.ProverKitTheme
+import com.akakou.proverkit.ui.theme.ProverKitTheme
 
 
 

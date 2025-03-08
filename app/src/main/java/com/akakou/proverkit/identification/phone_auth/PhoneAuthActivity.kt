@@ -1,4 +1,4 @@
-package com.akakou.proverkit.proverkit.identification.phone_auth
+package com.akakou.proverkit.identification.phone_auth
 
 import android.content.Context
 import android.content.SharedPreferences

@@ -1,8 +1,8 @@
-package com.akakou.proverkit
+package com.akakou.proverkit.example
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import com.akakou.proverkit.proverkit.ProverActivityHelper
+import com.akakou.proverkit.ProverActivityHelper
 
 
 @SuppressLint("MissingSuperCall")

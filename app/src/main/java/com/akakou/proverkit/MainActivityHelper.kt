@@ -1,4 +1,4 @@
-package com.akakou.proverkit.proverkit
+package com.akakou.proverkit
 
 import android.app.Activity
 import android.content.Context
@@ -30,11 +30,8 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.akakou.proverkit.proverkit.ProverkitUtils.createQR
-import com.akakou.proverkit.proverkit.identification.phone_auth.PhoneAuthActivity
-import com.akakou.proverkit.proverkit.ui.theme.ProverKitTheme
-import com.google.zxing.BarcodeFormat
-import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.akakou.proverkit.ProverkitUtils.createQR
+import com.akakou.proverkit.ui.theme.ProverKitTheme
 
 class MainActivityHelper(val manager: AbstractProverManager)
 {
