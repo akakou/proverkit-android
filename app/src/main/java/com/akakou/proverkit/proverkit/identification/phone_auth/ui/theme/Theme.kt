@@ -1,4 +1,4 @@
-package com.akakou.proverkit.identification.phone_auth.ui.theme
+package com.akakou.proverkit.proverkit.identification.phone_auth.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

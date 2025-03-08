@@ -1,4 +1,4 @@
-package com.akakou.proverkit
+package com.akakou.proverkit.proverkit
 
 import android.content.Intent
 import android.net.Uri
@@ -24,37 +24,40 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.akakou.proverkit.ui.theme.ProverKitTheme
 
-object Message {
-    val warnMessage = "Hi! Do you check it?"
-    val submitButtonText = "Go !!"
-}
 
-class ProverActivity : ComponentActivity() {
+
+class ProverActivityHelper(
+    val prover: AbstractProver,
+) {
+    var warnMessageText : String = "Hi! Do you check it?"
+    var submitButtonText : String = "Go !!"
+
     lateinit var callback: Uri
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
+    fun start(activity: ComponentActivity) {
+        val intent = activity.intent
         val uri = Uri.parse(intent.dataString)
         val c = uri.getQueryParameter("callback")
         callback = Uri.parse(c)
 
-        val needUserCheck = true
+        prover.init(uri)
+
+        val needUserCheck = prover.needUserCheck()
 
         if (!needUserCheck) {
-            callbackWithProof()
-            finish()
+            callbackWithProof(activity)
+            activity.finish()
         }
 
-        setContent {
-            ProverActivityUI {
-                callbackWithProof()
+        activity.setContent {
+            ProverActivityUI(warnMessageText, submitButtonText) {
+                callbackWithProof(activity)
             }
         }
     }
 
-    fun callbackWithProof() : Int {
-        val proof = "this is proof"
+    fun callbackWithProof(activity: ComponentActivity) : Int {
+        val proof = prover.prove()
 
         val resultUrl = callback.buildUpon()
             .scheme("https")
@@ -62,7 +65,7 @@ class ProverActivity : ComponentActivity() {
             .build()
 
         val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
-        startActivity(browserIntent)
+        activity.startActivity(browserIntent)
 
         return 0
     }
@@ -70,7 +73,7 @@ class ProverActivity : ComponentActivity() {
 
 
 @Composable
-fun ProverActivityUI(callback: () -> Unit) {
+fun ProverActivityUI(message: String, submit: String, callback: () -> Unit) {
     ProverKitTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Column(
@@ -82,7 +85,7 @@ fun ProverActivityUI(callback: () -> Unit) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = Message.warnMessage,
+                    text = message,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(8.dp)
@@ -95,7 +98,7 @@ fun ProverActivityUI(callback: () -> Unit) {
                         .height(60.dp)
                 ) {
                     Text(
-                        text = Message.submitButtonText,
+                        text = submit,
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium
                     )

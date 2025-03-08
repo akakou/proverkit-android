@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ProverKit"
         tools:targetApi="35">
         <activity
-            android:name=".ProverActivity"
+            android:name=".SampleProverActivity"
             android:exported="true"
             android:label="@string/title_activity_prover"
             android:theme="@style/Theme.ProverKit">
@@ -27,7 +27,7 @@
 
         </activity>
         <activity
-            android:name=".identification.phone_auth.PhoneAuthActivity"
+            android:name=".proverkit.identification.phone_auth.PhoneAuthActivity"
             android:exported="false"
             android:label="@string/title_activity_phone_auth"
             android:theme="@style/Theme.ProverKit" />
