@@ -3,7 +3,7 @@ plugins {
 //    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-//    id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
 //        applicationId = "com.akakou.proverkit"
-//        minSdk = 35
+        minSdk = 35
         targetSdk = 35
 //        versionCode = 1
 //        versionName = "1.0"

@@ -27,52 +27,46 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class ProverActivityHelper(
-    val manager: AbstractProverManager,
+    manager: AbstractProverManager,
+    val activity: ComponentActivity,
 ) {
-    lateinit var callback: Uri
+    val prover: AbstractProver
+    val callback: Uri
+    var injectableUI : @Composable () -> Unit = { DefaultProverUI() }
+    var scheme = "https"
 
-    @OptIn(DelicateCoroutinesApi::class)
-    fun start(activity: ComponentActivity) {
+    init{
         val intent = activity.intent
         val uri = Uri.parse(intent.dataString)
         val c = uri.getQueryParameter("callback")
         callback = Uri.parse(c)
+        prover = manager.createProver(callback)!!
+    }
 
-        val prover = manager.createProver(callback)!!
-
+    fun passProof() {
         GlobalScope.launch {
-            prover.prepare()
-            val needUserCheck = prover.needUserCheck()
+            val proof = prover.prove()
+            val resultUrl = callback.buildUpon()
+                .scheme(scheme)
+                .fragment(proof)
+                .build()
 
-            if (!needUserCheck) {
-                callbackWithProof(activity, prover).invoke()
-                activity.finish()
-            } else {
-                GlobalScope.launch(Dispatchers.Main) {
-                    activity.setContent {
-                        ProverActivityUI(
-                            content = { DefaultProverUI() },
-                            onClick = callbackWithProof(activity, prover)
-                        )
-                    }
-                }
+            GlobalScope.launch(Dispatchers.Main) {
+                val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
+                activity.startActivity(browserIntent)
             }
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    fun callbackWithProof(activity: ComponentActivity, prover: AbstractProver): () -> Unit {
-        return {
-            GlobalScope.launch {
-                val proof = prover.prove()
-                val resultUrl = callback.buildUpon()
-                    .scheme("https")
-                    .fragment(proof)
-                    .build()
-
-                GlobalScope.launch(Dispatchers.Main) {
-                    val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
-                    activity.startActivity(browserIntent)
+    fun setupUI() {
+        GlobalScope.launch {
+            GlobalScope.launch(Dispatchers.Main) {
+                activity.setContent {
+                    ProverActivityUI(
+                        content = injectableUI,
+                        onClick = { passProof() }
+                    )
                 }
             }
         }

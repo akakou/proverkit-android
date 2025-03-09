@@ -9,8 +9,8 @@ import com.akakou.proverkit.ProverActivityHelper
 class SampleProverActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val helper = ProverActivityHelper(manager)
-        helper.start(this@SampleProverActivity)
+        val helper = ProverActivityHelper(manager, this@SampleProverActivity)
+        helper.setupUI()
     }
 }
 
