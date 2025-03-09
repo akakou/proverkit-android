@@ -10,7 +10,7 @@ class SampleProverManager: AbstractProverManager() {
         return SampleProver(uri)
     }
 
-    override fun register()  {
+    override suspend fun register()  {
         return
     }
 }
