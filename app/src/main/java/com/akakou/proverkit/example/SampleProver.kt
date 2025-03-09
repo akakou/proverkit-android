@@ -4,11 +4,11 @@ import android.net.Uri
 import com.akakou.proverkit.AbstractProver
 
 class SampleProver(uri: Uri): AbstractProver(uri) {
-    override fun needUserCheck() : Boolean {
+    override suspend fun needUserCheck() : Boolean {
         return true
     }
 
-    override fun prove() : String {
+    override suspend fun prove() : String {
         return "this is proof"
     }
 }

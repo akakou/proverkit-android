@@ -21,17 +21,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.akakou.proverkit.ui.theme.ProverKitTheme
-
-
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProverActivityHelper(
     val manager: AbstractProverManager,
 ) {
-    var warnMessageText : String = "Hi! Do you check it?"
-    var submitButtonText : String = "Go !!"
-
     lateinit var callback: Uri
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun start(activity: ComponentActivity) {
         val intent = activity.intent
         val uri = Uri.parse(intent.dataString)
@@ -40,40 +40,52 @@ class ProverActivityHelper(
 
         val prover = manager.createProver(callback)!!
 
-        val needUserCheck = prover.needUserCheck()
+        GlobalScope.launch {
+            prover.prepare()
+            val needUserCheck = prover.needUserCheck()
 
-        if (!needUserCheck) {
-            callbackWithProof(activity, prover)
-            activity.finish()
-        }
-
-        activity.setContent {
-            ProverActivityUI(warnMessageText, submitButtonText) {
-                callbackWithProof(activity, prover)
+            if (!needUserCheck) {
+                callbackWithProof(activity, prover).invoke()
+                activity.finish()
+            } else {
+                GlobalScope.launch(Dispatchers.Main) {
+                    activity.setContent {
+                        ProverActivityUI(
+                            content = { DefaultProverUI() },
+                            onClick = callbackWithProof(activity, prover)
+                        )
+                    }
+                }
             }
         }
     }
 
-    fun callbackWithProof(activity: ComponentActivity, prover: AbstractProver) : Int {
-        val proof = prover.prove()
+    @OptIn(DelicateCoroutinesApi::class)
+    fun callbackWithProof(activity: ComponentActivity, prover: AbstractProver): () -> Unit {
+        return {
+            GlobalScope.launch {
+                val proof = prover.prove()
+                val resultUrl = callback.buildUpon()
+                    .scheme("https")
+                    .fragment(proof)
+                    .build()
 
-        val resultUrl = callback.buildUpon()
-            .scheme("https")
-            .fragment(proof)
-            .build()
-
-        val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
-        activity.startActivity(browserIntent)
-
-        return 0
+                GlobalScope.launch(Dispatchers.Main) {
+                    val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
+                    activity.startActivity(browserIntent)
+                }
+            }
+        }
     }
 }
 
-
 @Composable
-fun ProverActivityUI(message: String, submit: String, callback: () -> Unit) {
+fun ProverActivityUI(
+    content: @Composable () -> Unit,
+    onClick: () -> Unit
+) {
     ProverKitTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -82,21 +94,16 @@ fun ProverActivityUI(message: String, submit: String, callback: () -> Unit) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
-                    text = message,
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(8.dp)
-                )
+                content()
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
-                    onClick = callback,
+                    onClick = onClick,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(60.dp)
                 ) {
                     Text(
-                        text = submit,
+                        text = "Go !!",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleMedium
                     )
@@ -104,4 +111,16 @@ fun ProverActivityUI(message: String, submit: String, callback: () -> Unit) {
             }
         }
     }
+}
+
+@Composable
+fun DefaultProverUI() {
+    val message = "Hi! Do you check it?"
+
+    Text(
+        text = message,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.padding(8.dp)
+    )
 }

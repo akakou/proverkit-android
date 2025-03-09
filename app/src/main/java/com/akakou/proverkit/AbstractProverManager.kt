@@ -7,7 +7,7 @@ abstract class AbstractProverManager {
         return null
     }
 
-    open fun register() {
+    open suspend fun register() {
         return
     }
 }

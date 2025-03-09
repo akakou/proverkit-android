@@ -3,11 +3,14 @@ package com.akakou.proverkit
 import android.net.Uri
 
 abstract class AbstractProver(val uri: Uri) {
-    open fun needUserCheck() : Boolean {
+    open suspend fun prepare() {
+    }
+
+    open suspend fun needUserCheck() : Boolean {
         return false
     }
 
-    open fun prove() : String {
+    open suspend fun prove() : String {
         return ""
     }
 }
