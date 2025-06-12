@@ -66,7 +66,7 @@ fun CredentialQRUI(bitmap: Bitmap) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "ID Token",
+                    text = "Credentials (including Secret Key)",
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -79,7 +79,7 @@ fun CredentialQRUI(bitmap: Bitmap) {
                 ) {
                     Image(
                         bitmap = bitmap.asImageBitmap(),
-                        contentDescription = "ID Token",
+                        contentDescription = "Credentials (including Secret Key)",
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxWidth()
