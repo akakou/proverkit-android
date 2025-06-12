@@ -1,10 +1,22 @@
 package com.akakou.proverkit.example
 
+
+import android.content.SharedPreferences
 import android.net.Uri
 import com.akakou.proverkit.AbstractProver
 
-class SampleProver(uri: Uri): AbstractProver(uri) {
-    override suspend fun prove() : String {
+class Passing {}
+
+class SampleProver(): AbstractProver<Passing>() {
+    override suspend fun prove(
+            uri: Uri,
+            preferences: SharedPreferences,
+            pass: Passing) : String {
         return "this is proof"
+    }
+
+    override suspend fun register(preferences: SharedPreferences) {
+        val configEditor = preferences.edit()
+        configEditor.putString("credential", "this is credential").apply()
     }
 }

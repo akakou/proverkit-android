@@ -28,26 +28,25 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.akakou.proverkit.ProverkitUtils.createQR
+import com.akakou.proverkit.utils.createQR
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class CredentialViewActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bitmap = createCredentialQR(this@CredentialViewActivity)!!
-        this.enableEdgeToEdge()
-        this.setContent {
-            CredentialQRUI(bitmap)
-        }
-    }
+        val config = getSharedPreferences("default", Context.MODE_PRIVATE)
+        val credential = config.getString("credential", "")!!
 
-    companion object {
-        fun createCredentialQR(activity: Activity) : Bitmap? {
-            val config = activity.getSharedPreferences("default", Context.MODE_PRIVATE)
-            val idToken = config.getString("idToken", "")!!
+        GlobalScope.launch {
+            val bmp = createQR(credential)
 
-            val bmp = createQR(idToken)
-
-            return bmp
+            runOnUiThread {
+                enableEdgeToEdge()
+                setContent {
+                    CredentialQRUI(bmp!!)
+                }
+            }
         }
     }
 }

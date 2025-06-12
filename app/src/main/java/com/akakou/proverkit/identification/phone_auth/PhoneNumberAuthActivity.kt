@@ -11,11 +11,9 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
 
 class PhoneNumberAuthActivity : ComponentActivity() {
     lateinit var configEditor : SharedPreferences.Editor
@@ -54,11 +52,11 @@ class PhoneNumberAuthActivity : ComponentActivity() {
 
             if (idToken == null) {
                 Toast.makeText(this@PhoneNumberAuthActivity, "Sign in failed", Toast.LENGTH_LONG).show()
+                return@launch
             }
 
-            GlobalScope.launch(Dispatchers.Main){
+            runOnUiThread {
                 configEditor.putString("idToken", idToken).apply()
-
                 finish()
             }
         }

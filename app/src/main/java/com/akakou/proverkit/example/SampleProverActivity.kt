@@ -1,16 +1,14 @@
 package com.akakou.proverkit.example
-import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import com.akakou.proverkit.ProverActivityHelper
+import com.akakou.proverkit.ProverActivity
 
 
-@SuppressLint("MissingSuperCall")
-class SampleProverActivity : ComponentActivity() {
+class SampleProverActivity : ProverActivity<Passing>(SampleProver()) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val helper = ProverActivityHelper(manager, this@SampleProverActivity)
-        helper.setupUI()
+
+        val pass = Passing()
+        run(pass)
     }
 }
 
