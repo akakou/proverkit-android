@@ -11,8 +11,11 @@ import kotlinx.coroutines.launch
 import androidx.core.net.toUri
 import kotlin.reflect.KClass
 
+
 open class ProverActivity<T: Any>(val prover: AbstractProver<T>) : ComponentActivity() {
     var scheme = "https"
+    var proofQuery = "proof"
+
     lateinit var callback: Uri
     lateinit var preferences: SharedPreferences
 
@@ -31,7 +34,7 @@ open class ProverActivity<T: Any>(val prover: AbstractProver<T>) : ComponentActi
             val proof = prover.prove(callback, preferences, t)
             val resultUrl = callback.buildUpon()
                 .scheme(scheme)
-                .fragment(proof)
+                .appendQueryParameter(proofQuery, proof)
                 .build()
 
             runOnUiThread {
