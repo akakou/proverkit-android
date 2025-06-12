@@ -13,23 +13,10 @@ import kotlin.jvm.java
 
 open class LaunchActivity<T: Any>(val prover: AbstractProver<T>, var identificationActivity: Class<*>) : ComponentActivity() {
     lateinit var config: SharedPreferences
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         config = getSharedPreferences("default", Context.MODE_PRIVATE)
 
-        GlobalScope.launch {
-            refresh()
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        GlobalScope.launch {
-            refresh()
-        }
-    }
-
-     fun refresh() {
         var intent : Intent
         if (!hasIdentified(this)) {
             intent = Intent(this, identificationActivity)
