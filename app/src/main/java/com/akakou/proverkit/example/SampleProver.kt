@@ -9,7 +9,7 @@ class Passing {}
 
 class SampleProver(): AbstractProver<Passing>() {
     override suspend fun prove(
-            uri: Uri,
+            uri: String,
             preferences: SharedPreferences,
             pass: Passing)  {
     }
