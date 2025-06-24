@@ -14,7 +14,6 @@ import kotlin.reflect.KClass
 
 open class ProverActivity<T: Any>(val prover: AbstractProver<T>) : ComponentActivity() {
     var scheme = "https"
-    var proofQuery = "proof"
 
     lateinit var callback: Uri
     lateinit var preferences: SharedPreferences
@@ -31,15 +30,9 @@ open class ProverActivity<T: Any>(val prover: AbstractProver<T>) : ComponentActi
 
     fun run(t: T) {
         GlobalScope.launch {
-            val proof = prover.prove(callback, preferences, t)
-            val resultUrl = callback.buildUpon()
-                .scheme(scheme)
-                .appendQueryParameter(proofQuery, proof)
-                .build()
-
+            prover.prove(callback, preferences, t)
             runOnUiThread {
-                val browserIntent = Intent(Intent.ACTION_VIEW, resultUrl)
-                startActivity(browserIntent)
+                finish()
             }
         }
     }

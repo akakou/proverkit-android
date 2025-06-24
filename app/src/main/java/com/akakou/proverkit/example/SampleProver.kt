@@ -11,8 +11,7 @@ class SampleProver(): AbstractProver<Passing>() {
     override suspend fun prove(
             uri: Uri,
             preferences: SharedPreferences,
-            pass: Passing) : String {
-        return "this is proof"
+            pass: Passing)  {
     }
 
     override suspend fun register(preferences: SharedPreferences) {

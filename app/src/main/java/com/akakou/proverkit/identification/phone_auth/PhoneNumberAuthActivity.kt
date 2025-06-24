@@ -37,7 +37,6 @@ class PhoneNumberAuthActivity : ComponentActivity() {
         signInLauncher.launch(signInIntent)
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     val signInLauncher = registerForActivityResult(
         FirebaseAuthUIActivityResultContract(),
     ) { res ->
