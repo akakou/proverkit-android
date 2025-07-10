@@ -26,7 +26,7 @@ open class LaunchActivity<T: Any>(val prover: AbstractProver<T>, var identificat
 
         GlobalScope.launch {
             if (!hasRegistered(this@LaunchActivity)) {
-                prover.register(config)
+                prover.register(this@LaunchActivity)
             }
             runOnUiThread {
                 intent = Intent(this@LaunchActivity, CredentialViewActivity::class.java)
