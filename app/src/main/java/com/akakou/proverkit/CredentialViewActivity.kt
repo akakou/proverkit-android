@@ -1,13 +1,16 @@
 package com.akakou.proverkit
 
-import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.akakou.proverkit.utils.createQR
@@ -44,7 +48,7 @@ class CredentialViewActivity : ComponentActivity() {
             runOnUiThread {
                 enableEdgeToEdge()
                 setContent {
-                    CredentialQRUI(bmp!!)
+                    CredentialQRUI(bitmap = bmp!!, credential = credential)
                 }
             }
         }
@@ -52,8 +56,10 @@ class CredentialViewActivity : ComponentActivity() {
 }
 
 @Composable
-fun CredentialQRUI(bitmap: Bitmap) {
-    return Scaffold { innerPadding ->
+fun CredentialQRUI(bitmap: Bitmap, credential: String) {
+    val context = LocalContext.current
+
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -66,7 +72,7 @@ fun CredentialQRUI(bitmap: Bitmap) {
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Credentials (including Secret Key)",
+                    text = "Credentials (including Secret Key)\nYou can copy this by tapping here.",
                     style = MaterialTheme.typography.titleLarge,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
@@ -75,7 +81,11 @@ fun CredentialQRUI(bitmap: Bitmap) {
                 Card(
                     shape = MaterialTheme.shapes.medium,
                     elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            copyToClipboard(context, credential)
+                        }
                 ) {
                     Image(
                         bitmap = bitmap.asImageBitmap(),
@@ -89,4 +99,11 @@ fun CredentialQRUI(bitmap: Bitmap) {
             }
         }
     }
+}
+
+fun copyToClipboard(context: Context, text: String) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText("credential", text)
+    clipboard.setPrimaryClip(clip)
+    Toast.makeText(context, "Copied!", Toast.LENGTH_SHORT).show()
 }
