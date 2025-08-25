@@ -14,10 +14,9 @@ open class ProverActivity<T: Any>(val prover: AbstractProver<T>) : ComponentActi
 
     fun run(t: T) {
         GlobalScope.launch {
-            val uri = intent.dataString!!.toUri()
-            val callback = uri.getQueryParameter("callback")
+            val uri = intent.dataString!!
 
-            prover.prove(callback!!, this@ProverActivity, t)
+            prover.prove(uri, this@ProverActivity, t)
             runOnUiThread {
                 finish()
             }
