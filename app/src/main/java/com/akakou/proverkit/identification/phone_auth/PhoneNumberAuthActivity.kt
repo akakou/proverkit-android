@@ -56,6 +56,7 @@ class PhoneNumberAuthActivity : ComponentActivity() {
 
             runOnUiThread {
                 configEditor.putString("idToken", idToken).apply()
+                setResult(RESULT_OK)
                 finish()
             }
         }
